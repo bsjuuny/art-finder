@@ -72,10 +72,10 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
 
     if (loading) {
         return (
-            <div className="min-h-[50vh] flex items-center justify-center text-white">
+            <div className="min-h-[50vh] flex items-center justify-center" style={{ color: 'var(--foreground)' }}>
                 <div className="animate-pulse flex flex-col items-center">
                     <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                    <p className="text-slate-400">상세 정보를 불러오는 중...</p>
+                    <p style={{ color: 'var(--text-secondary)' }}>상세 정보를 불러오는 중...</p>
                 </div>
             </div>
         );
@@ -94,13 +94,23 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
         );
     }
 
-    const containerClass = isModal ? "bg-slate-900 text-white rounded-2xl overflow-hidden max-h-[90vh] overflow-y-auto custom-scrollbar" : "min-h-screen bg-slate-950 text-white pb-20";
+    const containerClass = isModal 
+        ? "rounded-2xl overflow-hidden max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl transition-colors duration-300" 
+        : "min-h-screen pb-20 transition-colors duration-300";
+
+    const containerStyle = {
+        background: isModal ? 'var(--surface)' : 'var(--background)',
+        color: 'var(--foreground)'
+    };
 
     return (
-        <main className={containerClass}>
+        <main className={containerClass} style={containerStyle}>
             {/* Header Image Background */}
             <div className={`relative w-full overflow-hidden ${isModal ? 'h-[30vh]' : 'h-[40vh] md:h-[50vh]'}`}>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent z-10" />
+                <div 
+                    className="absolute inset-0 z-10" 
+                    style={{ background: 'linear-gradient(to top, var(--surface) 0%, transparent 100%)' }} 
+                />
                 {event.imgUrl ? (
                     <img
                         src={event.imgUrl}
@@ -137,7 +147,8 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="glass-card bg-slate-900/80 border border-white/10 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-xl mb-10"
+                    className="glass-card border rounded-3xl overflow-hidden shadow-2xl backdrop-blur-xl mb-10"
+                    style={{ background: 'var(--surface-elevated)', borderColor: 'var(--border-color)' }}
                 >
                     <div className="flex flex-col md:flex-row">
                         {/* Poster Image */}
@@ -169,35 +180,35 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
                                 {decodeHtmlEntities(event.title)}
                             </h1>
 
-                            <div className="space-y-4 text-slate-300 mb-8 max-w-lg">
+                            <div className="space-y-4 mb-8 max-w-lg">
                                 <div className="flex items-start gap-4">
                                     <Calendar className="text-indigo-400 shrink-0 mt-0.5" size={20} />
                                     <div>
-                                        <p className="font-semibold text-white">기간</p>
-                                        <p>{formatDate(event.startDate)} ~ {formatDate(event.endDate)}</p>
+                                        <p className="font-semibold" style={{ color: 'var(--foreground)' }}>기간</p>
+                                        <p style={{ color: 'var(--text-secondary)' }}>{formatDate(event.startDate)} ~ {formatDate(event.endDate)}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-4">
                                     <Map className="text-sky-400 shrink-0 mt-0.5" size={20} />
                                     <div>
-                                        <p className="font-semibold text-white">지역</p>
-                                        <p>{event.area}{event.sigungu ? ` - ${event.sigungu}` : ''}</p>
+                                        <p className="font-semibold" style={{ color: 'var(--foreground)' }}>지역</p>
+                                        <p style={{ color: 'var(--text-secondary)' }}>{event.area}{event.sigungu ? ` - ${event.sigungu}` : ''}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-4">
                                     <MapPin className="text-pink-400 shrink-0 mt-0.5" size={20} />
                                     <div>
-                                        <p className="font-semibold text-white">장소</p>
-                                        <p>{event.place}</p>
-                                        {event.placeAddr && <p className="text-sm text-slate-500 mt-1">{event.placeAddr}</p>}
+                                        <p className="font-semibold" style={{ color: 'var(--foreground)' }}>장소</p>
+                                        <p style={{ color: 'var(--text-secondary)' }}>{event.place}</p>
+                                        {event.placeAddr && <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{event.placeAddr}</p>}
                                     </div>
                                 </div>
                                 {(event.price || event.priceAddr) && (
                                     <div className="flex items-start gap-4">
                                         <CreditCard className="text-emerald-400 shrink-0 mt-0.5" size={20} />
                                         <div>
-                                            <p className="font-semibold text-white">가격</p>
-                                            <p>{event.price || event.priceAddr}</p>
+                                            <p className="font-semibold" style={{ color: 'var(--foreground)' }}>가격</p>
+                                            <p style={{ color: 'var(--text-secondary)' }}>{event.price || event.priceAddr}</p>
                                         </div>
                                     </div>
                                 )}
@@ -205,8 +216,8 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
                                     <div className="flex items-start gap-4">
                                         <Phone className="text-amber-400 shrink-0 mt-0.5" size={20} />
                                         <div>
-                                            <p className="font-semibold text-white">문의</p>
-                                            <p>{event.phone || event.phoneAddr}</p>
+                                            <p className="font-semibold" style={{ color: 'var(--foreground)' }}>문의</p>
+                                            <p style={{ color: 'var(--text-secondary)' }}>{event.phone || event.phoneAddr}</p>
                                         </div>
                                     </div>
                                 )}
@@ -229,7 +240,8 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
                                         href={event.placeUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex-1 min-w-[140px] py-3 rounded-xl glass bg-white/5 hover:bg-white/10 text-white font-semibold flex items-center justify-center gap-2 transition-all border border-white/10"
+                                        className="flex-1 min-w-[140px] py-3 rounded-xl glass hover:bg-white/10 font-semibold flex items-center justify-center gap-2 transition-all border"
+                                        style={{ background: 'var(--surface)', color: 'var(--foreground)', borderColor: 'var(--border-color)' }}
                                     >
                                         <MapPin size={18} />
                                         공연장 안내
@@ -245,9 +257,9 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
                             <div className="p-8 border-t border-white/5 bg-black/10">
                                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                                     <Info size={20} className="text-slate-400" />
-                                    <span className="font-semibold text-white">상세 내용</span>
+                                    <span className="font-semibold" style={{ color: 'var(--foreground)' }}>상세 내용</span>
                                 </h3>
-                                <div className="prose prose-invert prose-slate max-w-none text-slate-300">
+                                <div className="prose prose-invert prose-slate max-w-none" style={{ color: 'var(--text-secondary)' }}>
                                     {/* Ideally we would render HTML here if it's safe, often it's plain text or basic HTML */}
                                     <div dangerouslySetInnerHTML={{ __html: event.contents1 }} />
                                 </div>

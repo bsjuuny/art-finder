@@ -176,7 +176,11 @@ export default function Home() {
                   placeholder="공연명, 예술가, 장소 등을 검색해보세요"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-14 pr-24 py-5 rounded-3xl glass bg-white/5 border-white/10 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500/50 transition-all text-white placeholder:text-slate-500 shadow-2xl text-lg font-medium"
+                  className="w-full pl-14 pr-24 py-5 rounded-3xl glass border-white/10 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500/50 transition-all placeholder:text-slate-500 shadow-2xl text-lg font-medium"
+                  style={{
+                    background: 'var(--input-bg)',
+                    color: 'var(--input-text)',
+                  }}
                 />
                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={24} />
                 <button
@@ -193,7 +197,7 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <Link href="/calendar" className="flex items-center gap-3 px-8 py-5 rounded-3xl glass bg-white/5 hover:bg-white/10 text-white font-bold transition-all border border-white/10 hover:border-indigo-500/40 group">
+              <Link href="/calendar" className="flex items-center gap-3 px-8 py-5 rounded-3xl glass hover:bg-white/10 font-bold transition-all border border-white/10 hover:border-indigo-500/40 group" style={{ background: 'var(--glass-card-bg)', color: 'var(--foreground)' }}>
                 <CalendarIcon size={20} className="text-indigo-400 group-hover:scale-110 transition-transform" />
                 <span>캘린더 뷰</span>
               </Link>
@@ -214,7 +218,8 @@ export default function Home() {
               <button
                 key={rec}
                 onClick={() => setSearchTerm(rec)}
-                className="px-4 py-1.5 rounded-full glass bg-white/5 hover:bg-indigo-500/20 text-slate-400 hover:text-indigo-300 text-xs font-semibold border border-white/5 hover:border-indigo-500/30 transition-all"
+                className="px-4 py-1.5 rounded-full glass hover:bg-indigo-500/20 transition-all font-semibold border border-white/5 hover:border-indigo-500/30 text-xs"
+                style={{ background: 'var(--glass-card-bg)', color: 'var(--text-secondary)' }}
               >
                 #{rec}
               </button>
@@ -231,7 +236,7 @@ export default function Home() {
             exit={{ y: -100, opacity: 0 }}
             className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[850px] px-6"
           >
-            <div className="bg-slate-950/95 backdrop-blur-3xl rounded-[2.5rem] p-2 border border-white/20 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7),0_0_20px_rgba(99,102,241,0.15)] flex items-center justify-between gap-4">
+            <div className="bg-slate-950/95 dark:bg-slate-950/95 backdrop-blur-3xl rounded-[2.5rem] p-2 border border-white/20 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7),0_0_20px_rgba(99,102,241,0.15)] flex items-center justify-between gap-4" style={{ background: 'var(--surface-toggle)', borderColor: 'var(--border-color)' }}>
               <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide no-scrollbar p-1">
                 {CATEGORIES.map((cat) => (
                   <button
@@ -239,8 +244,9 @@ export default function Home() {
                     onClick={() => handleCategoryChange(cat.id)}
                     className={`flex items-center gap-2 px-6 py-3 rounded-[1.5rem] whitespace-nowrap transition-all duration-300 ${selectedCategory === cat.id
                       ? `bg-gradient-to-r ${cat.color} text-white shadow-lg md:scale-105`
-                      : 'md:hover:bg-white/10 text-slate-200'
+                      : 'md:hover:bg-white/10'
                       }`}
+                    style={selectedCategory !== cat.id ? { color: 'var(--foreground)' } : {}}
                   >
                     <cat.icon size={18} className={selectedCategory === cat.id ? 'text-white' : 'text-indigo-400'} />
                     <span className="font-bold text-sm tracking-tight">{cat.name}</span>
@@ -250,7 +256,8 @@ export default function Home() {
               <div className="h-10 w-px bg-white/10 hidden sm:block"></div>
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="hidden sm:flex items-center gap-2 px-7 py-3 rounded-[1.5rem] bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 font-bold transition-all border border-indigo-500/30 text-sm whitespace-nowrap shadow-inner"
+                className="hidden sm:flex items-center gap-2 px-7 py-3 rounded-[1.5rem] bg-indigo-500/10 hover:bg-indigo-500/20 font-bold transition-all border border-indigo-500/30 text-sm whitespace-nowrap shadow-inner"
+                style={{ color: 'var(--foreground)' }}
               >
                 <Search size={16} />
                 <span>Search</span>
@@ -271,8 +278,9 @@ export default function Home() {
                   onClick={() => handleCategoryChange(cat.id)}
                   className={`flex items-center gap-3 px-8 py-5 rounded-[2rem] transition-all transform md:hover:scale-105 md:active:scale-95 ${selectedCategory === cat.id
                     ? `bg-gradient-to-r ${cat.color} text-white shadow-2xl shadow-indigo-500/20`
-                    : 'glass md:hover:bg-white/10 text-slate-400 border-white/10'
+                    : 'glass md:hover:bg-white/10 border-white/10'
                     }`}
+                  style={selectedCategory !== cat.id ? { background: 'var(--glass-card-bg)', color: 'var(--text-secondary)' } : {}}
                 >
                   <cat.icon size={24} />
                   <span className="font-black text-lg tracking-tight">{cat.name}</span>

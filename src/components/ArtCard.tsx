@@ -48,8 +48,9 @@ export default function ArtCard({ event }: ArtCardProps) {
 
     return (
         <motion.div
-            className={`glass-card rounded-[2rem] overflow-hidden flex flex-col h-full bg-slate-900/40 border ${styles.border} group`}
+            className={`glass-card rounded-[2rem] overflow-hidden flex flex-col h-full border ${styles.border} group`}
             style={{
+                background: 'var(--glass-card-bg)',
                 willChange: 'transform, opacity',
                 backfaceVisibility: 'hidden',
                 WebkitBackfaceVisibility: 'hidden',
@@ -68,7 +69,7 @@ export default function ArtCard({ event }: ArtCardProps) {
                         decoding="async"
                     />
                 ) : (
-                    <div className="w-full h-full bg-slate-800 flex items-center justify-center text-slate-500 font-inter-med text-xs">
+                    <div className="w-full h-full flex items-center justify-center text-xs font-inter-med" style={{ background: 'var(--surface-elevated)', color: 'var(--text-meta, #94a3b8)' }}>
                         COMING SOON
                     </div>
                 )}
@@ -88,25 +89,25 @@ export default function ArtCard({ event }: ArtCardProps) {
                             <span>{rating}</span>
                             <span className="text-slate-500 font-inter-med">({reviews})</span>
                         </div>
-                        <span className="text-[10px] text-slate-500 font-inter-bold uppercase tracking-tighter">Verified Content</span>
+                        <span className="text-[10px] font-inter-bold uppercase tracking-tighter" style={{ color: 'var(--text-muted, #6C6C70)' }}>Verified Content</span>
                     </div>
 
-                    <h3 className="text-xl font-inter-bold mb-5 line-clamp-2 leading-[1.3] text-slate-100 group-hover:text-indigo-400 transition-colors duration-500">
+                    <h3 className="text-xl font-inter-bold mb-5 line-clamp-2 leading-[1.3] transition-colors duration-500 group-hover:text-indigo-400" style={{ color: 'var(--foreground)' }}>
                         {decodeHtmlEntities(event.title)}
                     </h3>
 
                     <div className="space-y-3">
-                        <div className="flex items-center gap-3 text-meta">
+                        <div className="flex items-center gap-3" style={{ color: 'var(--text-secondary)' }}>
                             <Calendar size={14} className={styles.text + " shrink-0"} />
-                            <span className="font-inter-med">{formatDate(event.startDate)} — {formatDate(event.endDate)}</span>
+                            <span className="font-inter-med text-[0.825rem]">{formatDate(event.startDate)} — {formatDate(event.endDate)}</span>
                         </div>
-                        <div className="flex items-center gap-3 text-meta">
+                        <div className="flex items-center gap-3" style={{ color: 'var(--text-secondary)' }}>
                             <Map size={14} className="text-slate-500 shrink-0" />
-                            <span className="font-inter-med truncate">{event.area}{event.sigungu ? ` ${event.sigungu}` : ''}</span>
+                            <span className="font-inter-med truncate text-[0.825rem]">{event.area}{event.sigungu ? ` ${event.sigungu}` : ''}</span>
                         </div>
-                        <div className="flex items-center gap-3 text-meta">
+                        <div className="flex items-center gap-3" style={{ color: 'var(--text-secondary)' }}>
                             <MapPin size={14} className="text-slate-500 shrink-0" />
-                            <span className="font-inter-med truncate">{event.place}</span>
+                            <span className="font-inter-med truncate text-[0.825rem]">{event.place}</span>
                         </div>
                     </div>
                 </div>
@@ -114,7 +115,12 @@ export default function ArtCard({ event }: ArtCardProps) {
                 <Link
                     href={`?eventId=${event.seq}`}
                     scroll={false}
-                    className={`mt-8 w-full py-4 rounded-2xl flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 md:active:scale-[0.98] text-xs font-inter-bold text-white transition-all shadow-xl group/btn`}
+                    className={`mt-8 w-full py-4 rounded-2xl flex items-center justify-center gap-2 border md:active:scale-[0.98] text-xs font-inter-bold transition-all shadow-xl group/btn`}
+                    style={{
+                        background: 'var(--surface-elevated)',
+                        borderColor: 'var(--border-color)',
+                        color: 'var(--foreground)',
+                    }}
                     aria-label={`${event.title} 상세 정보 보기`}
                 >
                     View Details <ExternalLink size={14} className="text-indigo-400 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />

@@ -49,7 +49,10 @@ export default function DonationPopup() {
                 >
                     <button
                         onClick={closePopup}
-                        className="absolute top-4 right-4 p-2 text-slate-500 hover:text-white transition-colors"
+                        className="absolute top-4 right-4 p-2 transition-colors"
+                        style={{ color: 'var(--text-muted)' }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = 'var(--foreground)'}
+                        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
                         aria-label="닫기"
                     >
                         <X size={20} />
@@ -65,12 +68,12 @@ export default function DonationPopup() {
                             <span>Support Art Finder</span>
                         </div>
 
-                        <p className="text-slate-200 font-inter-bold text-base leading-relaxed mb-6">
+                        <p className="font-inter-bold text-base leading-relaxed mb-6" style={{ color: 'var(--foreground)' }}>
                             대한민국 구석구석의<br />
                             문화 예술 정보를 찾으셨나요? ☕
                         </p>
 
-                        <p className="text-slate-500 font-inter-med text-xs leading-relaxed mb-8">
+                        <p className="font-inter-med text-xs leading-relaxed mb-8" style={{ color: 'var(--text-secondary)' }}>
                             작은 응원이 플랫폼을 지속하고<br />
                             더 나은 정보를 제공하는 큰 힘이 됩니다.
                         </p>
@@ -83,7 +86,7 @@ export default function DonationPopup() {
                                     className="w-40 h-40 object-contain"
                                 />
                             </div>
-                            <div className="mt-4 text-[10px] font-inter-bold text-slate-600 uppercase tracking-widest">
+                            <div className="mt-4 text-[10px] font-inter-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
                                 Scan to support
                             </div>
                         </div>
