@@ -28,8 +28,8 @@
   --surface: #0a0a0a;
   --surface-elevated: #111111;
   --surface-toggle: rgba(20, 20, 20, 0.85);
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-secondary: rgba(255, 255, 255, 0.75);
+  --text-muted: rgba(255, 255, 255, 0.5);
   --text-inverse: #000000;
   --border-color: rgba(255, 255, 255, 0.10);
   --glass-bg: rgba(10, 10, 10, 0.4);
@@ -44,7 +44,7 @@
 
   --input-bg: rgba(255, 255, 255, 0.05);
   --input-text: #ffffff;
-  --input-placeholder: #4b5563;
+  --input-placeholder: rgba(255, 255, 255, 0.35);
 
   --theme-transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
@@ -62,7 +62,7 @@ html[data-theme="light"] {
   --surface: #F0EEE9;
   --surface-elevated: #FFFFFF;
   --surface-toggle: rgba(255, 255, 255, 0.90);
-  --text-secondary: #475569;
+  --text-secondary: #334155;
   --text-muted: #64748b;
   --text-inverse: #ffffff;
   --border-color: rgba(0, 0, 0, 0.10);
@@ -99,6 +99,11 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.01em;
+}
+
+::placeholder {
+  color: var(--input-placeholder);
+  opacity: 1;
 }
 
 /* Weight definitions for Inter */

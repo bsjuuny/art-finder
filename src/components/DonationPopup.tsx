@@ -68,7 +68,7 @@ export default function DonationPopup() {
                             <span>Support Art Finder</span>
                         </div>
 
-                        <p className="font-inter-bold text-base leading-relaxed mb-6" style={{ color: 'var(--foreground)' }}>
+                        <p className="font-inter-black text-base leading-relaxed mb-6" style={{ color: 'var(--foreground)' }}>
                             대한민국 구석구석의<br />
                             문화 예술 정보를 찾으셨나요? ☕
                         </p>

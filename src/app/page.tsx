@@ -334,8 +334,8 @@ export default function Home() {
                       <div className="w-24 h-24 rounded-full bg-slate-900 flex items-center justify-center mx-auto mb-8 border border-white/5">
                         <Filter className="text-indigo-500/20" size={40} />
                       </div>
-                      <h3 className="text-4xl font-inter-black text-white mb-6 tracking-tight">지평선 끝까지 찾았습니다만...</h3>
-                      <p className="text-slate-500 text-lg mb-12 max-w-lg mx-auto font-inter-med leading-relaxed">
+                      <h3 className="text-4xl font-inter-black mb-6 tracking-tight" style={{ color: 'var(--foreground)' }}>지평선 끝까지 찾았습니다만...</h3>
+                      <p className="text-lg mb-12 max-w-lg mx-auto font-inter-med leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                         요청하신 보물을 아직 발견하지 못했습니다.<br />
                         다른 영감을 검색하거나 아래 추천 항목을 확인해보세요.
                       </p>
@@ -368,7 +368,12 @@ export default function Home() {
                   <button
                     onClick={() => loadMoreEvents(false)}
                     disabled={loading}
-                    className="px-12 py-4 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 hover:from-indigo-500/30 hover:to-purple-500/30 text-white rounded-2xl font-black tracking-widest transition-all border border-white/10 hover:border-indigo-500/40 shadow-xl disabled:opacity-50 disabled:cursor-not-allowed uppercase"
+                    className="px-12 py-4 rounded-2xl font-black tracking-widest transition-all border shadow-xl disabled:opacity-50 disabled:cursor-not-allowed uppercase"
+                    style={{ 
+                      background: 'var(--surface-elevated)', 
+                      color: 'var(--foreground)',
+                      borderColor: 'var(--border-color)'
+                    }}
                   >
                     {loading ? (
                       <span className="flex items-center gap-3">
@@ -388,21 +393,21 @@ export default function Home() {
 
       {/* Footer Reliability Info */}
       <footer className="mt-20 border-t border-white/5 pt-12 pb-20 px-6">
-        <div className="w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8 py-8 glass rounded-3xl border-white/5 bg-white/2 cursor-default">
+        <div className="w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8 py-8 glass rounded-3xl border cursor-default" style={{ background: 'var(--surface)', borderColor: 'var(--border-color)' }}>
           <div className="flex items-center gap-6 px-8">
             <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
               <Info size={24} />
             </div>
             <div>
-              <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Data Reliability</p>
-              <h4 className="text-slate-200 font-bold">Public Data Source: 문화포털 문화예술 정보 API</h4>
-              <p className="text-slate-500 text-sm">Last Synced: {new Date().toLocaleDateString()} (Daily Update)</p>
+              <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: 'var(--text-muted)' }}>Data Reliability</p>
+              <h4 className="font-bold" style={{ color: 'var(--foreground)' }}>Public Data Source: 문화포털 문화예술 정보 API</h4>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Last Synced: {new Date().toLocaleDateString()} (Daily Update)</p>
             </div>
           </div>
-          <div className="flex items-center gap-4 px-8 border-l border-white/5">
-            <div className="text-right">
-              <p className="text-slate-200 font-black tracking-tight">ART FINDER PLATFORM</p>
-              <p className="text-slate-500 text-xs uppercase font-bold tracking-[0.2em]">Crafted For Perfection</p>
+          <div className="flex items-center gap-4 px-8 md:border-l border-white/5" style={{ borderColor: 'var(--border-color)' }}>
+            <div className="text-center md:text-right">
+              <p className="font-black tracking-tight" style={{ color: 'var(--foreground)' }}>ART FINDER PLATFORM</p>
+              <p className="text-xs uppercase font-bold tracking-[0.2em]" style={{ color: 'var(--text-secondary)' }}>Crafted For Perfection</p>
             </div>
           </div>
         </div>

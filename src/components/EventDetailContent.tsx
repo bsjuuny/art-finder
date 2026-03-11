@@ -56,6 +56,17 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
         }
     }, [id]);
 
+    // Scroll Lock when modal is open
+    useEffect(() => {
+        if (isModal) {
+            const originalStyle = window.getComputedStyle(document.body).overflow;
+            document.body.style.overflow = 'hidden';
+            return () => {
+                document.body.style.overflow = originalStyle;
+            };
+        }
+    }, [isModal]);
+
     const formatDate = (dateStr: string) => {
         if (!dateStr || dateStr.length !== 8) return dateStr;
         return `${dateStr.substring(0, 4)}.${dateStr.substring(4, 6)}.${dateStr.substring(6, 8)}`;
@@ -72,10 +83,10 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
 
     if (loading) {
         return (
-            <div className="min-h-[50vh] flex items-center justify-center" style={{ color: 'var(--foreground)' }}>
-                <div className="animate-pulse flex flex-col items-center">
+            <div className="min-h-[50vh] flex items-center justify-center">
+                <div className="flex flex-col items-center">
                     <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                    <p style={{ color: 'var(--text-secondary)' }}>상세 정보를 불러오는 중...</p>
+                    <p className="font-bold animate-pulse text-black dark:text-white">상세 정보를 불러오는 중...</p>
                 </div>
             </div>
         );
@@ -83,8 +94,8 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
 
     if (error || !event) {
         return (
-            <div className="min-h-[50vh] flex flex-col items-center justify-center text-white gap-4">
-                <p className="text-red-400 text-lg">{error || '정보를 찾을 수 없습니다.'}</p>
+            <div className="min-h-[50vh] flex flex-col items-center justify-center gap-4">
+                <p className="text-lg font-bold" style={{ color: 'var(--accent)' }}>{error || '정보를 찾을 수 없습니다.'}</p>
                 {!isModal && (
                     <Link href="/" className="px-6 py-2 bg-indigo-600 rounded-full hover:bg-indigo-700 transition-colors">
                         메인으로 돌아가기
@@ -94,8 +105,8 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
         );
     }
 
-    const containerClass = isModal 
-        ? "rounded-2xl overflow-hidden max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl transition-colors duration-300" 
+    const containerClass = isModal
+        ? "rounded-2xl overflow-hidden max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl transition-colors duration-300"
         : "min-h-screen pb-20 transition-colors duration-300";
 
     const containerStyle = {
@@ -106,10 +117,10 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
     return (
         <main className={containerClass} style={containerStyle}>
             {/* Header Image Background */}
-            <div className={`relative w-full overflow-hidden ${isModal ? 'h-[30vh]' : 'h-[40vh] md:h-[50vh]'}`}>
-                <div 
-                    className="absolute inset-0 z-10" 
-                    style={{ background: 'linear-gradient(to top, var(--surface) 0%, transparent 100%)' }} 
+            <div className={`relative w-full overflow-hidden ${isModal ? 'h-[15vh]' : 'h-[25vh] md:h-[35vh]'}`}>
+                <div
+                    className="absolute inset-0 z-10"
+                    style={{ background: 'linear-gradient(to top, var(--surface) 0%, transparent 100%)' }}
                 />
                 {event.imgUrl ? (
                     <img
@@ -171,12 +182,19 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
                         {/* Details */}
                         <div className="md:w-2/3 p-6 md:p-8 flex flex-col">
                             <div className="mb-2">
-                                <span className="px-3 py-1 text-xs font-bold rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                                <span
+                                    className="px-3 py-1 text-xs font-bold rounded-full border"
+                                    style={{
+                                        backgroundColor: 'rgba(99, 102, 241, 0.15)',
+                                        color: 'var(--accent-primary)',
+                                        borderColor: 'rgba(99, 102, 241, 0.3)'
+                                    }}
+                                >
                                     {event.realmName}
                                 </span>
                             </div>
 
-                            <h1 className="text-2xl md:text-3xl font-black mb-6 leading-tight text-white">
+                            <h1 className="text-2xl md:text-3xl font-black mb-6 leading-tight" style={{ color: 'var(--foreground)' }}>
                                 {decodeHtmlEntities(event.title)}
                             </h1>
 
