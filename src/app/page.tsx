@@ -575,7 +575,6 @@ export default function Home() {
             <div>
               <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: 'var(--text-muted)' }}>Data Reliability</p>
               <h4 className="font-bold" style={{ color: 'var(--foreground)' }}>Public Data Source: 문화포털 문화예술 정보 API</h4>
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Last Synced: {process.env.NEXT_PUBLIC_BUILD_DATE} (Daily Update)</p>
             </div>
           </div>
           <div className="flex items-center gap-4 px-8 md:border-l border-white/5" style={{ borderColor: 'var(--border-color)' }}>

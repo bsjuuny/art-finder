@@ -12,9 +12,6 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  env: {
-    NEXT_PUBLIC_BUILD_DATE: new Date().toLocaleDateString('ko-KR'),
-  },
   reactStrictMode: true,
   basePath: '/artfinder',
   trailingSlash: true,
