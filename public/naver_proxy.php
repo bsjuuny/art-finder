@@ -21,19 +21,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $CLIENT_ID = '90V2hkIZYJRyfZtv5H_V';
 $CLIENT_SECRET = 'J4qgQRTsUZ';
 
-$query = isset($_GET['query']) ? $_GET['query'] : '';
+$query   = isset($_GET['query'])   ? $_GET['query']        : '';
 $display = isset($_GET['display']) ? (int) $_GET['display'] : 10;
-$sort = isset($_GET['sort']) ? $_GET['sort'] : 'sim'; // 'sim'(유사도순), 'date'(최신순)
+$sort    = isset($_GET['sort'])    ? $_GET['sort']          : 'sim';
+$type    = isset($_GET['type'])    ? $_GET['type']          : 'blog';
 
 if (empty($query)) {
     http_response_code(400);
-    echo json_encode(['error' => 'Missing query parameter']);
+    echo json_encode(['error' => 'Missing query parameter', 'items' => []]);
     exit();
 }
 
+$allowedTypes = ['blog', 'webkr'];
+if (!in_array($type, $allowedTypes, true)) {
+    $type = 'blog';
+}
+
 // Build the full Naver API URL
-$baseUrl = 'https://openapi.naver.com/v1/search/blog.json';
-$fullUrl = $baseUrl . '?query=' . urlencode($query) . '&display=' . $display . '&sort=' . $sort;
+$baseUrl = 'https://openapi.naver.com/v1/search/' . $type . '.json';
+$params  = ['query' => $query, 'display' => $display];
+if ($type === 'blog') {
+    $params['sort'] = $sort;
+}
+$fullUrl = $baseUrl . '?' . http_build_query($params);
 
 // Make the request to Naver API
 $ch = curl_init();

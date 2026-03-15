@@ -8,9 +8,10 @@ interface Props {
     event: CultureEvent;
     size?: number;
     className?: string;
+    style?: React.CSSProperties;
 }
 
-export default function FavoriteButton({ event, size = 18, className = '' }: Props) {
+export default function FavoriteButton({ event, size = 18, className = '', style }: Props) {
     const { isFavorite, toggleFavorite } = useFavorites();
     const active = isFavorite(event.seq);
 
@@ -20,6 +21,7 @@ export default function FavoriteButton({ event, size = 18, className = '' }: Pro
             aria-label={active ? '찜 취소' : '찜하기'}
             aria-pressed={active}
             className={`flex items-center justify-center transition-all active:scale-90 ${className}`}
+            style={style}
         >
             <Heart
                 size={size}

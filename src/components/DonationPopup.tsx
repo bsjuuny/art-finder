@@ -45,7 +45,7 @@ export default function DonationPopup() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 40, scale: 0.95 }}
                     transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                    className="fixed bottom-8 right-8 z-[9999] w-[320px] glass rounded-[2.5rem] p-8 overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] border-white/10 group"
+                    className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-[9999] w-[calc(100vw-2rem)] max-w-[320px] glass rounded-[2.5rem] p-6 sm:p-8 overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] border-white/10 group"
                 >
                     <button
                         onClick={closePopup}

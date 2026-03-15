@@ -24,20 +24,30 @@ if (empty($path)) {
     exit();
 }
 
+// ─── 서버사이드 API 키 ─── 클라이언트가 전달한 serviceKey는 무시
+$API_KEY = 'zE4YazSHyZ8cuyyEt/rxOg+Z8VhizXlJZUooFZC9xLEtIkMwQOX48QOvP+fXYGErE320897RAG+AEBwxNvw9Xg==';
+
+// 허용된 path 목록 (Path traversal 방지)
+$allowedPaths = ['/period2', '/detail2'];
+if (!in_array($path, $allowedPaths, true)) {
+    http_response_code(400);
+    echo 'Error: Invalid path';
+    exit();
+}
+
 // Build the full API URL
-// Base URL for Culture Info API
-$baseUrl = 'http://apis.data.go.kr/B553457/cultureinfo';
+$baseUrl = 'https://apis.data.go.kr/B553457/cultureinfo';
 $fullUrl = $baseUrl . $path;
 
-// Add all other query parameters
+// 클라이언트 파라미터 복사 (path, serviceKey 제외 — 키는 서버에서만 주입)
 $queryParams = $_GET;
-unset($queryParams['path']); // Remove the path parameter
+unset($queryParams['path']);
+unset($queryParams['serviceKey']); // 클라이언트 공급 키 무시 (보안)
 
-if (!empty($queryParams)) {
-    // If 'service' is passed, rename it to 'serviceKey' if needed, or stick to what API expects.
-    // The API expects 'serviceKey'. In client we might pass it as 'serviceKey' directly.
-    $fullUrl .= '?' . http_build_query($queryParams);
-}
+// 서버에서 API 키 주입
+$queryParams['serviceKey'] = $API_KEY;
+
+$fullUrl .= '?' . http_build_query($queryParams);
 
 // Make the request to API
 $ch = curl_init();
