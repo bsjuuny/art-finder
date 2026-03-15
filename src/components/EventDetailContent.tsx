@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useEffect, useState } from 'react';
 
 import { Calendar, MapPin, Map, ExternalLink, ArrowLeft, Info, Phone, CreditCard } from 'lucide-react';
@@ -9,6 +10,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 
 import { fetchCultureEventDetail } from '@/utils/api';
 import ReviewSection from '@/components/ReviewSection';
+import FavoriteButton from '@/components/FavoriteButton';
+import { CultureEvent } from '@/types';
 
 // ...
 
@@ -154,7 +157,7 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
             </div>
 
             {/* Content Container */}
-            <div className={`max-w-4xl mx-auto px-6 relative z-20 ${isModal ? '-mt-24' : '-mt-48'}`}>
+            <div className={`max-w-4xl mx-auto px-6 relative z-20 ${isModal ? '-mt-24' : '-mt-16 md:-mt-48'}`}>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -194,33 +197,64 @@ export default function EventDetailContent({ id, isModal = false }: { id: string
                                 </span>
                             </div>
 
-                            <h1 className="text-2xl md:text-3xl font-black mb-6 leading-tight" style={{ color: 'var(--foreground)' }}>
-                                {decodeHtmlEntities(event.title)}
-                            </h1>
+                            <div className="flex items-start gap-3 mb-6">
+                                <h1 className="text-2xl md:text-3xl font-black leading-tight flex-1" style={{ color: 'var(--foreground)' }}>
+                                    {decodeHtmlEntities(event.title)}
+                                </h1>
+                                <FavoriteButton
+                                    event={{
+                                        seq:       id,
+                                        title:     event.title      || '',
+                                        realmName: event.realmName  || '',
+                                        area:      event.area       || '',
+                                        thumbnail: event.imgUrl     || '',
+                                        startDate: event.startDate  || '',
+                                        endDate:   event.endDate    || '',
+                                        place:     event.place      || '',
+                                        sigungu:   event.sigungu    || '',
+                                        gpsX:      event.gpsX       || '',
+                                        gpsY:      event.gpsY       || '',
+                                        url:       event.url        || '',
+                                    } as CultureEvent}
+                                    size={22}
+                                    className="shrink-0 mt-1 w-10 h-10 rounded-full border hover:bg-white/10 transition-colors"
+                                    style={{ borderColor: 'var(--border-color)' } as React.CSSProperties}
+                                />
+                            </div>
 
                             <div className="space-y-4 mb-8 max-w-lg">
-                                <div className="flex items-start gap-4">
-                                    <Calendar className="text-indigo-400 shrink-0 mt-0.5" size={20} />
-                                    <div>
-                                        <p className="font-semibold" style={{ color: 'var(--foreground)' }}>기간</p>
-                                        <p style={{ color: 'var(--text-secondary)' }}>{formatDate(event.startDate)} ~ {formatDate(event.endDate)}</p>
+                                {(event.startDate || event.endDate) && (
+                                    <div className="flex items-start gap-4">
+                                        <Calendar className="text-indigo-400 shrink-0 mt-0.5" size={20} />
+                                        <div>
+                                            <p className="font-semibold" style={{ color: 'var(--foreground)' }}>기간</p>
+                                            <p style={{ color: 'var(--text-secondary)' }}>
+                                                {event.startDate ? formatDate(event.startDate) : '미정'} ~ {event.endDate ? formatDate(event.endDate) : '미정'}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <Map className="text-sky-400 shrink-0 mt-0.5" size={20} />
-                                    <div>
-                                        <p className="font-semibold" style={{ color: 'var(--foreground)' }}>지역</p>
-                                        <p style={{ color: 'var(--text-secondary)' }}>{event.area}{event.sigungu ? ` - ${event.sigungu}` : ''}</p>
+                                )}
+                                {(event.area || event.sigungu) && (
+                                    <div className="flex items-start gap-4">
+                                        <Map className="text-sky-400 shrink-0 mt-0.5" size={20} />
+                                        <div>
+                                            <p className="font-semibold" style={{ color: 'var(--foreground)' }}>지역</p>
+                                            <p style={{ color: 'var(--text-secondary)' }}>
+                                                {[event.area, event.sigungu].filter(Boolean).join(' - ')}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <MapPin className="text-pink-400 shrink-0 mt-0.5" size={20} />
-                                    <div>
-                                        <p className="font-semibold" style={{ color: 'var(--foreground)' }}>장소</p>
-                                        <p style={{ color: 'var(--text-secondary)' }}>{event.place}</p>
-                                        {event.placeAddr && <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{event.placeAddr}</p>}
+                                )}
+                                {(event.place || event.placeAddr) && (
+                                    <div className="flex items-start gap-4">
+                                        <MapPin className="text-pink-400 shrink-0 mt-0.5" size={20} />
+                                        <div>
+                                            <p className="font-semibold" style={{ color: 'var(--foreground)' }}>장소</p>
+                                            {event.place && <p style={{ color: 'var(--text-secondary)' }}>{event.place}</p>}
+                                            {event.placeAddr && <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{event.placeAddr}</p>}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                                 {(event.price || event.priceAddr) && (
                                     <div className="flex items-start gap-4">
                                         <CreditCard className="text-emerald-400 shrink-0 mt-0.5" size={20} />

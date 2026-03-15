@@ -8,8 +8,8 @@ export async function middleware(request: NextRequest) {
         if (pathname.startsWith('/api/culture')) {
             console.log(`[Middleware] PROXY active for: ${pathname}`);
 
-            const API_KEY = process.env.NEXT_PUBLIC_CULTURE_API_KEY || '';
-            const BASE_URL = process.env.NEXT_PUBLIC_CULTURE_API_BASE_URL || 'https://apis.data.go.kr/B553457/cultureinfo';
+            const API_KEY = process.env.CULTURE_API_KEY || '';
+            const BASE_URL = process.env.CULTURE_API_BASE_URL || 'https://apis.data.go.kr/B553457/cultureinfo';
 
             let targetUrl = '';
             let relativePath = pathname.replace('/api/culture', '');
@@ -66,11 +66,16 @@ export async function middleware(request: NextRequest) {
         } else if (pathname.startsWith('/naver-api')) {
             console.log(`[Middleware] Naver Proxy active for: ${pathname}`);
 
-            const NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID || '';
-            const NAVER_CLIENT_SECRET = process.env.NEXT_PUBLIC_NAVER_CLIENT_SECRET || '';
+            const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID || '';
+            const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET || '';
 
-            const url = new URL(`https://openapi.naver.com/v1/search/blog.json`);
-            searchParams.forEach((v, k) => url.searchParams.set(k, v));
+            const searchType = searchParams.get('type') || 'blog';
+            const apiEndpoint = searchType === 'webkr' ? 'webkr' : 'blog';
+            const url = new URL(`https://openapi.naver.com/v1/search/${apiEndpoint}.json`);
+            
+            searchParams.forEach((v, k) => {
+                if (k !== 'type') url.searchParams.set(k, v);
+            });
 
             try {
                 const response = await fetch(url.toString(), {
@@ -81,7 +86,15 @@ export async function middleware(request: NextRequest) {
                     cache: 'no-store'
                 });
 
-                const data = await response.json();
+                const text = await response.text();
+
+                let data: unknown;
+                try {
+                    data = JSON.parse(text);
+                } catch {
+                    console.error('[Middleware] Naver API returned non-JSON:', text.substring(0, 200));
+                    return NextResponse.json({ error: 'Naver API error', items: [] }, { status: response.status });
+                }
 
                 return NextResponse.json(data, {
                     status: response.status,
@@ -91,7 +104,7 @@ export async function middleware(request: NextRequest) {
                 });
             } catch (error) {
                 console.error('[Middleware] Naver Proxy Fetch Failed:', error);
-                return NextResponse.json({ error: 'Naver Proxy failed' }, { status: 500 });
+                return NextResponse.json({ error: 'Naver Proxy failed', items: [] }, { status: 500 });
             }
         }
     }

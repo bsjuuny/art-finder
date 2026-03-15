@@ -113,27 +113,27 @@ export default function CalendarPage() {
 
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
-                    <Link href="/" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+                    <Link href="/" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors shrink-0">
                         <ArrowLeft size={20} />
-                        <span>메인으로</span>
+                        <span className="hidden sm:inline">메인으로</span>
                     </Link>
-                    <h1 className="text-2xl font-bold flex items-center gap-2">
+                    <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
                         <CalendarIcon className="text-indigo-500" />
                         문화 캘린더
                     </h1>
-                    <div className="w-[100px]"></div> {/* Spacer */}
+                    <div className="w-6 sm:w-[100px] shrink-0"></div>
                 </div>
 
                 {/* Calendar Controls */}
                 <div className="flex items-center justify-center gap-6 mb-8">
-                    <button onClick={handlePrevMonth} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                        <ChevronLeft size={24} />
+                    <button onClick={handlePrevMonth} aria-label="이전 달" className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                        <ChevronLeft size={24} aria-hidden="true" />
                     </button>
-                    <span className="text-xl font-semibold w-40 text-center">
+                    <span aria-live="polite" aria-atomic="true" className="text-xl font-semibold w-40 text-center">
                         {format(currentDate, 'yyyy년 M월', { locale: ko })}
                     </span>
-                    <button onClick={handleNextMonth} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                        <ChevronRight size={24} />
+                    <button onClick={handleNextMonth} aria-label="다음 달" className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                        <ChevronRight size={24} aria-hidden="true" />
                     </button>
                 </div>
 
@@ -142,12 +142,12 @@ export default function CalendarPage() {
                     {/* Day Headers */}
                     <div className="grid grid-cols-7 border-b border-white/10 text-center py-3 bg-white/5 font-semibold text-slate-300">
                         {['일', '월', '화', '수', '목', '금', '토'].map((day, i) => (
-                            <div key={day} className={i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : ''}>{day}</div>
+                            <div key={day} className={i === 0 ? 'text-red-300' : i === 6 ? 'text-sky-300' : ''}>{day}</div>
                         ))}
                     </div>
 
                     {/* Days */}
-                    <div className="grid grid-cols-7 auto-rows-[minmax(120px,auto)] text-sm">
+                    <div className="grid grid-cols-7 auto-rows-[minmax(72px,auto)] sm:auto-rows-[minmax(120px,auto)] text-sm">
                         {calendarDays.map((day, idx) => {
                             const isCurrentMonth = isSameMonth(day, monthStart);
                             const isToday = isSameDay(day, new Date());
@@ -165,8 +165,8 @@ export default function CalendarPage() {
                                     <div className={`
                                 mb-2 font-medium w-7 h-7 flex items-center justify-center rounded-full
                                 ${isToday ? 'bg-indigo-600 text-white' : ''}
-                                ${idx % 7 === 0 && isCurrentMonth ? 'text-red-400' : ''}
-                                ${idx % 7 === 6 && isCurrentMonth ? 'text-blue-400' : ''}
+                                ${idx % 7 === 0 && isCurrentMonth ? 'text-red-300' : ''}
+                                ${idx % 7 === 6 && isCurrentMonth ? 'text-sky-300' : ''}
                             `}>
                                         {format(day, 'd')}
                                     </div>
@@ -212,9 +212,9 @@ export default function CalendarPage() {
 
             {/* Event Details Modal */}
             {selectedEvent && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedEvent(null)}>
+                <div role="dialog" aria-modal="true" aria-labelledby="event-modal-title" className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedEvent(null)}>
                     <div className="bg-slate-900 border border-white/10 rounded-2xl w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
-                        <h3 className="text-xl font-bold mb-2 pr-8">{decodeHtmlEntities(selectedEvent.title)}</h3>
+                        <h3 id="event-modal-title" className="text-xl font-bold mb-2 pr-8">{decodeHtmlEntities(selectedEvent.title)}</h3>
                         <div className="text-sm text-slate-400 mb-6 space-y-1">
                             <p>{format(selectedEvent.startDate.substring(0, 4) + '-' + selectedEvent.startDate.substring(4, 6) + '-' + selectedEvent.startDate.substring(6, 8), 'yyyy.MM.dd')} ~ {format(selectedEvent.endDate.substring(0, 4) + '-' + selectedEvent.endDate.substring(4, 6) + '-' + selectedEvent.endDate.substring(6, 8), 'yyyy.MM.dd')}</p>
                             <p>{selectedEvent.place}</p>
@@ -237,9 +237,10 @@ export default function CalendarPage() {
                         </div>
                         <button
                             onClick={() => setSelectedEvent(null)}
+                            aria-label="닫기"
                             className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white"
                         >
-                            ✕
+                            <span aria-hidden="true">✕</span>
                         </button>
                     </div>
                 </div>
@@ -247,17 +248,18 @@ export default function CalendarPage() {
 
             {/* Daily Events List Modal */}
             {selectedDate && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedDate(null)}>
+                <div role="dialog" aria-modal="true" aria-labelledby="daily-modal-title" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedDate(null)}>
                     <div className="bg-slate-900 border border-white/10 rounded-2xl w-full max-w-lg p-6 shadow-2xl max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xl font-bold">
+                            <h3 id="daily-modal-title" className="text-xl font-bold">
                                 {format(selectedDate, 'yyyy년 M월 d일', { locale: ko })} 일정
                             </h3>
                             <button
                                 onClick={() => setSelectedDate(null)}
+                                aria-label="닫기"
                                 className="p-2 text-slate-400 hover:text-white bg-white/5 rounded-full"
                             >
-                                ✕
+                                <span aria-hidden="true">✕</span>
                             </button>
                         </div>
 
@@ -288,9 +290,9 @@ export default function CalendarPage() {
             )}
 
             {loading && (
-                <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/20 pointer-events-none">
+                <div role="status" aria-live="polite" aria-label="일정 로드 중" className="fixed inset-0 z-40 flex items-center justify-center bg-black/20 pointer-events-none">
                     <div className="bg-slate-900/80 p-4 rounded-xl backdrop-blur-md flex items-center gap-3 border border-white/10">
-                        <Loader2 className="animate-spin text-indigo-500" />
+                        <Loader2 aria-hidden="true" className="animate-spin text-indigo-500" />
                         <span>일정을 불러오는 중입니다...</span>
                     </div>
                 </div>

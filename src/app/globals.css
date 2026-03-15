@@ -106,6 +106,21 @@ body {
   opacity: 1;
 }
 
+/* ===========================
+   WCAG 2.1 AA: Focus Visibility
+   모든 인터랙티브 요소에 명확한 포커스 인디케이터
+   =========================== */
+:focus-visible {
+  outline: 2px solid #818cf8;
+  outline-offset: 2px;
+}
+
+/* 둥근 버튼은 outline도 둥글게 */
+button:focus-visible,
+a:focus-visible {
+  border-radius: inherit;
+}
+
 /* Weight definitions for Inter */
 .font-inter-reg {
   font-weight: 400;
