@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, ArrowLeft, Trash2, MapPin, Calendar, Sparkles } from 'lucide-react';
+import { Heart, ArrowLeft, Trash2, MapPin, Calendar, Sparkles, MonitorSmartphone } from 'lucide-react';
 import { useFavorites } from '@/hooks/useFavorites';
 import { getSummary } from '@/utils/recommendations';
 import ArtCard from '@/components/ArtCard';
@@ -40,6 +40,12 @@ export default function FavoritesPage() {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 pt-10">
+
+                {/* 기기 공유 안내 */}
+                <div className="flex items-center gap-2 mb-8 px-3 py-2 rounded-xl border w-fit text-xs" style={{ background: 'var(--surface-elevated)', borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}>
+                    <MonitorSmartphone size={13} className="shrink-0" aria-hidden="true" />
+                    <span>찜 목록은 이 기기에만 저장되며 다른 기기와 공유되지 않습니다.</span>
+                </div>
 
                 {/* 선호 패턴 요약 카드 — 찜 3개 이상일 때 */}
                 <AnimatePresence>
