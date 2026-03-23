@@ -19,6 +19,8 @@ interface Result {
   loadMore: () => void;
 }
 
+const AUTO_FETCH_MAX = 5; // 지역 필터 결과 없을 때 자동 페이지 최대 횟수
+
 export function useCultureEvents({ keyword, serviceTp, sido }: Options): Result {
   const [events, setEvents]   = useState<CultureEvent[]>([]);
   const [loading, setLoading] = useState(false);
@@ -28,6 +30,7 @@ export function useCultureEvents({ keyword, serviceTp, sido }: Options): Result 
   const pageRef              = useRef(1);
   const loadingRef           = useRef(false);
   const abortControllerRef   = useRef<AbortController | null>(null);
+  const autoFetchCountRef    = useRef(0);
 
   const load = useCallback(async (reset: boolean) => {
     if (loadingRef.current && !reset) return;
@@ -58,6 +61,7 @@ export function useCultureEvents({ keyword, serviceTp, sido }: Options): Result 
         sido ? incoming.length === PAGE_SIZE : added.length < total;
 
       if (reset) {
+        autoFetchCountRef.current = 0;
         setEvents(filtered);
         setHasMore(computeHasMore(filtered, totalCount));
         pageRef.current = 2;
@@ -88,8 +92,20 @@ export function useCultureEvents({ keyword, serviceTp, sido }: Options): Result 
   useEffect(() => {
     setHasMore(true);
     pageRef.current = 1;
+    autoFetchCountRef.current = 0;
     load(true);
   }, [load]);
+
+  // 지역 필터 활성 시 결과가 0이면 자동으로 다음 페이지 fetch (최대 AUTO_FETCH_MAX회)
+  useEffect(() => {
+    if (!sido) return;
+    if (loading) return;
+    if (events.length > 0) return;
+    if (!hasMore) return;
+    if (autoFetchCountRef.current >= AUTO_FETCH_MAX) return;
+    autoFetchCountRef.current += 1;
+    load(false);
+  }, [sido, loading, events.length, hasMore, load]);
 
   const loadMore = useCallback(() => load(false), [load]);
 
