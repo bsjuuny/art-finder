@@ -113,9 +113,9 @@ export default function Home() {
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-none"
+            className="text-5xl md:text-7xl font-black mb-8 tracking-tighter leading-none"
           >
-            ART <span className="gradient-text">FINDER</span>
+            영감수집 <span className="opacity-30 font-light mx-2">|</span> <span className="gradient-text tracking-tight">Inspo Log</span>
           </motion.h1>
 
           <motion.p
@@ -249,10 +249,12 @@ export default function Home() {
                     <SwiperSlide key={region.id} style={{ width: 'auto' }}>
                       <button
                         onClick={() => handleRegionChange(region.id)}
-                        className={`px-4 py-2 rounded-2xl whitespace-nowrap transition-all duration-200 font-bold text-xs leading-none ${selectedRegion === region.id
-                          ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/50'
-                          : 'glass border border-white/5 hover:bg-white/10'
-                          }`}
+                        className={cn(
+                          "px-4 py-2 rounded-2xl whitespace-nowrap transition-all duration-200 font-bold text-xs leading-none border",
+                          selectedRegion === region.id
+                            ? "bg-indigo-500 text-white border-indigo-500 shadow-md"
+                            : "bg-[var(--surface-elevated)] border-[var(--border-color)] hover:border-indigo-400"
+                        )}
                         style={selectedRegion !== region.id ? { color: 'var(--text-secondary)' } : {}}
                       >
                         {region.name}
@@ -378,10 +380,10 @@ export default function Home() {
                                 key={region.id}
                                 onClick={() => handleRegionChange(region.id)}
                                 className={cn(
-                                  "px-3 py-1.5 rounded-xl text-xs font-bold transition-all",
+                                  "px-3 py-1.5 rounded-xl text-xs font-bold transition-all border",
                                   selectedRegion === region.id
-                                    ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/50'
-                                    : 'border border-white/5 hover:bg-white/10'
+                                    ? "bg-indigo-500 text-white border-indigo-500 shadow-sm"
+                                    : "bg-[var(--surface-elevated)] border-[var(--border-color)] hover:border-indigo-400"
                                 )}
                                 style={selectedRegion !== region.id ? { color: 'var(--text-secondary)' } : {}}
                               >
@@ -402,7 +404,7 @@ export default function Home() {
 
       {/* 개인화 추천 섹션 — 찜 1개 이상, 추천 결과 있을 때 표시 */}
       <AnimatePresence>
-        {favorites.length >= 1 && recommendations.length > 0 && (
+        {favorites.length >= 1 && recommendations.length > 0 && !debouncedSearch && (
           <motion.section
             ref={forYouRef}
             initial={{ opacity: 0, y: 20 }}
@@ -504,9 +506,9 @@ export default function Home() {
                     transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
                     className="max-w-4xl mx-auto"
                   >
-                    <div className="text-center py-32 mb-12 glass border-white/5 rounded-[4rem] bg-indigo-500/[0.02] shadow-inner">
-                      <div className="w-24 h-24 rounded-full bg-slate-900 flex items-center justify-center mx-auto mb-8 border border-white/5">
-                        <Filter className="text-indigo-500/20" size={40} />
+                    <div className="text-center py-32 mb-12 glass border-[var(--border-color)] rounded-[4rem] bg-indigo-500/[0.02] shadow-inner">
+                      <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-8 border border-[var(--border-color)] shadow-lg" style={{ background: 'var(--surface-elevated)' }}>
+                        <Filter className="text-indigo-400" size={40} />
                       </div>
                       <h3 className="text-4xl font-inter-black mb-6 tracking-tight" style={{ color: 'var(--foreground)' }}>지평선 끝까지 찾았습니다만...</h3>
                       <p className="text-lg mb-12 max-w-lg mx-auto font-inter-med leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
@@ -514,8 +516,8 @@ export default function Home() {
                         다른 영감을 검색하거나 아래 추천 항목을 확인해보세요.
                       </p>
 
-                      <div className="glass bg-slate-950/40 rounded-[2.5rem] p-10 border border-white/5 inline-block text-left max-w-xl w-full">
-                        <h4 className="flex items-center gap-3 text-indigo-400 font-inter-bold mb-6 tracking-wider uppercase text-xs">
+                      <div className="glass rounded-[2.5rem] p-10 border border-[var(--border-color)] inline-block text-left max-w-xl w-full shadow-md" style={{ background: 'var(--surface)' }}>
+                        <h4 className="flex items-center gap-3 text-indigo-500 font-inter-bold mb-6 tracking-wider uppercase text-xs">
                           <TrendingUp size={16} /> Hot Cultural Trends
                         </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -523,9 +525,14 @@ export default function Home() {
                             <button
                               key={item}
                               onClick={() => setSearchTerm(item)}
-                              className="flex items-center gap-3 cursor-pointer text-slate-400 hover:text-white transition-all bg-white/[0.03] hover:bg-indigo-500/10 p-4 rounded-2xl border border-white/5 hover:border-indigo-500/30 group/rec text-sm font-inter-semi"
+                              className="flex items-center gap-3 cursor-pointer transition-all hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 p-4 rounded-2xl border hover:border-indigo-500/30 group/rec text-sm font-inter-semi shadow-sm"
+                              style={{ 
+                                color: 'var(--text-secondary)', 
+                                borderColor: 'var(--border-color)', 
+                                background: 'var(--bg-card)'
+                              }}
                             >
-                              <div className="w-1.5 h-1.5 rounded-full bg-indigo-500/40 group-hover/rec:bg-indigo-400 group-hover/rec:scale-125 transition-all"></div>
+                              <div className="w-1.5 h-1.5 rounded-full bg-indigo-500/40 group-hover/rec:bg-indigo-500 group-hover/rec:scale-125 transition-all"></div>
                               {item}
                             </button>
                           ))}
@@ -579,8 +586,8 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-4 px-8 md:border-l border-white/5" style={{ borderColor: 'var(--border-color)' }}>
             <div className="text-center md:text-right">
-              <p className="font-black tracking-tight" style={{ color: 'var(--foreground)' }}>ART FINDER PLATFORM</p>
-              <p className="text-xs uppercase font-bold tracking-[0.2em]" style={{ color: 'var(--text-secondary)' }}>Crafted For Perfection</p>
+               <p className="font-black tracking-tight" style={{ color: 'var(--foreground)' }}>Inspo Log PLATFORM</p>
+              <p className="text-xs uppercase font-bold tracking-[0.2em]" style={{ color: 'var(--text-secondary)' }}>Crafted For Inspiration</p>
             </div>
           </div>
         </div>

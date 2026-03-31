@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Art Finder",
-  description: "Find art events and exhibitions near you",
+  title: "영감수집 | Inspo Log",
+  description: "당신의 일상을 채울 영감수집 - 전국의 전시와 행사를 찾아보세요",
 };
 
 export default function RootLayout({
