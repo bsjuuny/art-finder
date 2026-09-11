@@ -43,3 +43,13 @@
 - `src/lib/api.ts`: 복잡한 외부 데이터를 가져와서 정제하는 핵심 라이브러리.
 - `src/components/Card/`: 이 프로젝트의 자존심인 애플 스타일 카드 컴포넌트.
 - `public/data/`: 검색 최적화를 위해 일부 1차 가공된 데이터 저장소.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
