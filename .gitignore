@@ -33,3 +33,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# secrets not meant for git (prebuild 가 .env 에서 생성)
+public/naver_proxy_config.php

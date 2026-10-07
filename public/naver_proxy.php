@@ -16,10 +16,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // -------------------------------------------------------------
-// [중요] 네이버 개발자 센터에서 발급받은 API 키를 여기에 입력하세요.
+// [중요] 네이버 API 키는 naver_proxy_config.php(git 제외, prebuild 가 .env 에서 생성)에 있다.
+// 서버 환경변수 NAVER_CLIENT_ID / NAVER_CLIENT_SECRET 가 있으면 그쪽을 먼저 쓴다(2026-10-07).
 // -------------------------------------------------------------
-$CLIENT_ID = '90V2hkIZYJRyfZtv5H_V';
-$CLIENT_SECRET = 'J4qgQRTsUZ';
+$__configFile = __DIR__ . '/naver_proxy_config.php';
+if (file_exists($__configFile)) {
+    require $__configFile;
+}
+$CLIENT_ID = getenv('NAVER_CLIENT_ID') ?: (defined('NAVER_CLIENT_ID') ? NAVER_CLIENT_ID : '');
+$CLIENT_SECRET = getenv('NAVER_CLIENT_SECRET') ?: (defined('NAVER_CLIENT_SECRET') ? NAVER_CLIENT_SECRET : '');
+
+if (empty($CLIENT_ID) || empty($CLIENT_SECRET)) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Naver API credentials are not configured', 'items' => []]);
+    exit();
+}
 
 $query   = isset($_GET['query'])   ? $_GET['query']        : '';
 $display = isset($_GET['display']) ? (int) $_GET['display'] : 10;
