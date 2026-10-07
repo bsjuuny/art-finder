@@ -32,7 +32,8 @@
 ## 🚨 문제 해결 (Troubleshooting)
 
 **Q: 전시회 정보가 아예 안 떠요.**
-- A: 공공 API 키가 만료되었거나 서버가 점검 중일 수 있습니다. `src/lib/api.ts`에서 API 호출 결과를 로그로 찍어보세요.
+- A: 공공 API 키가 만료되었거나 서버가 점검 중일 수 있습니다. `src/utils/api.ts`에서 API 호출 결과를 로그로 찍어보세요. (`src/lib/api.ts`는 더 이상 존재하지 않습니다.)
+- **로컬 개발**에서는 `src/middleware.ts`가 `NODE_ENV === 'development'`일 때만 `/api/culture*`를 프록시합니다. **프로덕션(Cafe24 정적 export)에서는 이 미들웨어가 빌드에 포함되지 않고**, Cafe24에 올라간 PHP 프록시(`public/proxy.php`, `public/naver_proxy.php` — 빌드 때 `out/`에 복사)가 실제 API 호출을 처리합니다 — `middleware.ts`를 고쳐도 배포본 동작은 바뀌지 않습니다.
 
 **Q: XML 파싱 에러가 나요.**
 - A: 공공 데이터의 응답 형식이 가끔 예고 없이 바뀔 때가 있습니다. `xml2js` 설정 옵션을 확인해야 합니다.
@@ -40,9 +41,11 @@
 ---
 
 ## 📁 주요 구성 요소
-- `src/lib/api.ts`: 복잡한 외부 데이터를 가져와서 정제하는 핵심 라이브러리.
-- `src/components/Card/`: 이 프로젝트의 자존심인 애플 스타일 카드 컴포넌트.
-- `public/data/`: 검색 최적화를 위해 일부 1차 가공된 데이터 저장소.
+- `src/utils/api.ts`: 문화행사 API 호출 + XML 파싱 (구 `src/lib/api.ts`는 삭제됨).
+- `src/middleware.ts`: dev 전용 CORS 프록시 — 프로덕션에서는 동작하지 않음(위 문제 해결 참고).
+- `src/hooks/`: `useCultureEvents.ts`, `useDebounce.ts`, `useFavorites.ts`, `useTheme.ts` 등.
+- `src/components/`: 카드/모달 등 UI 컴포넌트.
+- `public/data/`는 더 이상 존재하지 않음 — 사전 가공 JSON 없이 매번 fetch합니다.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
