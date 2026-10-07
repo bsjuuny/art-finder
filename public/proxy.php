@@ -25,7 +25,18 @@ if (empty($path)) {
 }
 
 // ─── 서버사이드 API 키 ─── 클라이언트가 전달한 serviceKey는 무시
-$API_KEY = 'zE4YazSHyZ8cuyyEt/rxOg+Z8VhizXlJZUooFZC9xLEtIkMwQOX48QOvP+fXYGErE320897RAG+AEBwxNvw9Xg==';
+// 키는 서버 환경변수 CULTURE_API_KEY, 없으면 culture_proxy_config.php(git 제외, prebuild 가 .env 에서 생성)에서 읽는다(2026-10-07).
+// 공공데이터포털 Decoding 형태 — 아래 http_build_query 가 인코딩한다.
+$__configFile = __DIR__ . '/culture_proxy_config.php';
+if (file_exists($__configFile)) {
+    require $__configFile;
+}
+$API_KEY = getenv('CULTURE_API_KEY') ?: (defined('CULTURE_API_KEY') ? CULTURE_API_KEY : '');
+if ($API_KEY === '') {
+    http_response_code(500);
+    echo 'Error: API key is not configured';
+    exit();
+}
 
 // 허용된 path 목록 (Path traversal 방지)
 $allowedPaths = ['/period2', '/detail2'];

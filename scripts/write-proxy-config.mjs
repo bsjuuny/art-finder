@@ -43,3 +43,4 @@ function write(file, names) {
 }
 
 write('naver_proxy_config.php', ['NAVER_CLIENT_ID', 'NAVER_CLIENT_SECRET']);
+write('culture_proxy_config.php', ['CULTURE_API_KEY']);
