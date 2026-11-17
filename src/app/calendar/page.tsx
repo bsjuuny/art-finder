@@ -19,6 +19,7 @@ import { ko } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
+import { decodeHtmlEntities } from '@/utils/text';
 export default function CalendarPage() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [events, setEvents] = useState<CultureEvent[]>([]);
@@ -98,14 +99,6 @@ export default function CalendarPage() {
         window.open(googleUrl, '_blank');
     };
 
-    const decodeHtmlEntities = (str: string) => {
-        if (!str) return '';
-        return str.replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"')
-            .replace(/&#39;/g, "'")
-            .replace(/&amp;/g, '&');
-    };
 
     return (
         <main className="min-h-screen bg-slate-950 text-white pb-20">

@@ -1,5 +1,6 @@
 import { CultureEvent } from '@/types';
 import convert from 'xml-js';
+import { decodeHtmlEntities } from '@/utils/text';
 
 const { xml2js } = convert;
 
@@ -135,13 +136,13 @@ export async function fetchCultureEvents(
     const list: XmlItem[] = Array.isArray(rawItems) ? rawItems : [rawItems];
     const events: CultureEvent[] = list.map(item => ({
       seq:       getText(item.seq),
-      title:     getText(item.title),
+      title:     decodeHtmlEntities(getText(item.title)),
       startDate: getText(item.startDate),
       endDate:   getText(item.endDate),
-      place:     getText(item.place),
-      realmName: getText(item.realmName),
-      area:      getText(item.area),
-      sigungu:   getText(item.sigungu),
+      place:     decodeHtmlEntities(getText(item.place)),
+      realmName: decodeHtmlEntities(getText(item.realmName)),
+      area:      decodeHtmlEntities(getText(item.area)),
+      sigungu:   decodeHtmlEntities(getText(item.sigungu)),
       thumbnail: getText(item.thumbnail),
       gpsX:      getText(item.gpsX),
       gpsY:      getText(item.gpsY),
@@ -177,7 +178,9 @@ export async function fetchCultureEventDetail(
 
     const flat: Record<string, string> = {};
     for (const key of Object.keys(body)) {
-      flat[key] = getDetailText(body as XmlItem, key);
+      const raw = getDetailText(body as XmlItem, key);
+      // contents* 는 SafeHtml 이 HTML 로 해석하므로 그대로 둔다 — 풀면 &lt;태그&gt; 글자가 진짜 태그가 된다.
+      flat[key] = key.startsWith('contents') ? raw : decodeHtmlEntities(raw);
     }
     return flat;
   } catch (error) {

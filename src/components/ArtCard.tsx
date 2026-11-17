@@ -6,6 +6,7 @@ import { Calendar, MapPin, Map, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FavoriteButton from '@/components/FavoriteButton';
 
+import { decodeHtmlEntities } from '@/utils/text';
 interface ArtCardProps {
     event: CultureEvent;
 }
@@ -16,14 +17,6 @@ export default function ArtCard({ event }: ArtCardProps) {
         return `${dateStr.substring(0, 4)}.${dateStr.substring(4, 6)}.${dateStr.substring(6, 8)}`;
     };
 
-    const decodeHtmlEntities = (str: string) => {
-        if (!str) return '';
-        return str.replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"')
-            .replace(/&#39;/g, "'")
-            .replace(/&amp;/g, '&');
-    };
 
     const getCategoryStyles = (realm: string) => {
         switch (realm) {
